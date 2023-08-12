@@ -1,0 +1,66 @@
+% Facts representing the graph (nodes and their neighbors)
+connected(a, b, 3).
+connected(a, c, 5).
+connected(b, d, 2).
+connected(b, e, 4).
+connected(c, f, 6).
+connected(d, goal, 1).
+connected(e, goal, 7).
+connected(f, goal, 3).
+
+% Best First Search algorithm
+best_first_search(Start, Goal, Path) :-
+    best_first_search([[(Start, 0)]], Goal, Path).
+
+% Base case: Goal reached
+best_first_search([[Goal | Path] | _], Goal, [Goal | Path]).
+
+% Recursive case: Expand the next node with the lowest cost
+best_first_search([Path | Paths], Goal, FinalPath) :-
+    expand(Path, NewPaths),
+    merge_paths(Paths, NewPaths, MergedPaths),
+    best_first_search(MergedPaths, Goal, FinalPath).
+
+% Expand a path by adding neighbors with their costs
+expand([Node | Path], NewPaths) :-
+    findall([Neighbor, Node | Path],
+            (connected(Node, Neighbor, Cost),
+             \+ member(Neighbor, Path)),
+            NewPaths).
+
+% Merge the current paths with the new paths based on costs
+merge_paths(Paths, NewPaths, MergedPaths) :-
+    append(Paths, NewPaths, AllPaths),
+    predsort(compare_path, AllPaths, SortedPaths),
+    prune(SortedPaths, MergedPaths).
+
+% Compare paths based on their total cost
+compare_path(Order, [A, _ | _], [B, _ | _]) :-
+    (   A =< B
+    ->  Order = '<'
+    ;   Order = '>'
+    ).
+
+% Prune the paths to keep the ones with the lowest cost
+prune([], []).
+prune([Path | Paths], [Path | Pruned]) :-
+    Path = [_, Cost | _],
+    prune_with_cost(Paths, Cost, Pruned).
+
+% Prune paths that have higher costs
+prune_with_cost([], _, []).
+prune_with_cost([[_, OtherCost | _] | Paths], Cost, Pruned) :-
+    OtherCost > Cost,
+    prune_with_cost(Paths, Cost, Pruned).
+prune_with_cost([Path | Paths], Cost, [Path | Pruned]) :-
+    Path = [_, OtherCost | _],
+    OtherCost =< Cost,
+    prune_with_cost(Paths, Cost, Pruned).
+
+% Entry point to find a solution using Best First Search
+find_best_first_solution(Start, Goal, Solution) :-
+    best_first_search(Start, Goal, Path),
+    reverse(Path, Solution).
+
+% Query to find a solution using Best First Search
+?- find_best_first_solution(a, goal, Solution), write(Solution).
