@@ -1,0 +1,47 @@
+% Actions
+action(grab).
+action(climb).
+action(push(From, To)).
+
+% State Representation
+% state(MonkeyVerticalPosition, MonkeyHorizontalPosition, HasBanana, OnChair)
+% MonkeyVerticalPosition: ceiling or floor
+% MonkeyHorizontalPosition: chair or floor
+% HasBanana: yes or no
+% OnChair: yes or no
+
+% Initial state
+initial_state(state(ceiling, chair, no, yes)).
+
+% Final state
+final_state(state(_, _, yes, _)).
+
+% Define legal actions in certain states
+legal_action(state(ceiling, _, _, _), climb).
+legal_action(state(floor, _, _, _), climb).
+legal_action(state(_, chair, _, _), push(chair, floor)).
+legal_action(state(_, floor, _, _), push(floor, chair)).
+legal_action(state(floor, _, no, chair), grab).
+
+% Apply action to a state, resulting in a new state
+apply_action(state(MV, MH, HB, OC), grab, state(MV, MH, yes, OC)).
+apply_action(state(MV, MH, HB, OC), climb, state(floor, MH, HB, OC)).
+apply_action(state(MV, MH, HB, chair), climb, state(ceiling, MH, HB, chair)).
+apply_action(state(MV, MH, HB, From), push(From, To), state(MV, To, HB, To)).
+
+% Recursive depth-first search
+dfs(State, _, [State]) :-
+    final_state(State).
+dfs(State, Visited, [State | Path]) :-
+    legal_action(State, Action),
+    apply_action(State, Action, NewState),
+    \+ member(NewState, Visited), % Prevent revisiting states
+    dfs(NewState, [NewState | Visited], Path).
+
+% Entry point to find a solution
+find_solution(Path) :-
+    initial_state(InitialState),
+    dfs(InitialState, [InitialState], Path).
+
+% Query to find a solution for the Monkey Banana problem
+?- find_solution(Path), reverse(Path, Solution), write(Solution).
