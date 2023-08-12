@@ -1,0 +1,31 @@
+% Diabetes Diet Recommendations
+diabetes_diet(avoid(sugar)).
+diabetes_diet(avoid(high_carb)).
+diabetes_diet(include(whole_grains)).
+diabetes_diet(include(lean_proteins)).
+diabetes_diet(include(vegetables)).
+
+% Hypertension Diet Recommendations
+hypertension_diet(avoid(sodium)).
+hypertension_diet(avoid(high_salt)).
+hypertension_diet(include(potassium_rich)).
+hypertension_diet(include(fruits)).
+hypertension_diet(include(lean_proteins)).
+
+% Suggest a diet based on disease
+suggest_diet(Disease) :-
+    Disease == diabetes ->
+        writeln("Diet for Diabetes:"),
+        diabetes_diet(Recommendation),
+        writeln(Recommendation),
+        fail;
+    Disease == hypertension ->
+        writeln("Diet for Hypertension:"),
+        hypertension_diet(Recommendation),
+        writeln(Recommendation),
+        fail;
+    writeln("Disease not recognized.").
+
+% Queries
+?- suggest_diet(diabetes).
+?- suggest_diet(hypertension).
