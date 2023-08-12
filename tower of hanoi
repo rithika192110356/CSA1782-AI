@@ -1,0 +1,18 @@
+% Move one disk from source peg to target peg.
+move(1, Source, Target, _) :-
+    write('Move disk from '), write(Source), write(' to '), write(Target), nl.
+
+% Move N disks from source peg to target peg using auxiliary peg.
+move(N, Source, Target, Auxiliary) :-
+    N > 1,
+    M is N - 1,
+    move(M, Source, Auxiliary, Target), % Move N-1 disks to auxiliary peg
+    move(1, Source, Target, _),         % Move the remaining disk to target peg
+    move(M, Auxiliary, Target, Source). % Move the N-1 disks from auxiliary to target peg
+
+% Solve the Towers of Hanoi problem for N disks.
+towers_of_hanoi(N) :-
+    move(N, 'peg A', 'peg C', 'peg B').
+
+% Query to solve the Towers of Hanoi problem for 3 disks
+?- towers_of_hanoi(3).
