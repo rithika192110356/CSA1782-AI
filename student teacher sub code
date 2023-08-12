@@ -1,0 +1,29 @@
+% Facts
+teacher_subject(mr_smith, math, math101).
+teacher_subject(ms_jones, physics, phy201).
+teacher_subject(mrs_doe, literature, lit301).
+
+student_subject(john, math, math101).
+student_subject(john, physics, phy201).
+student_subject(emma, literature, lit301).
+student_subject(emma, math, math101).
+student_subject(michael, physics, phy201).
+student_subject(sarah, math, math101).
+
+% Rules
+teaches(Teacher, Subject) :-
+    teacher_subject(Teacher, Subject, _).
+
+learns(Student, Subject) :-
+    student_subject(Student, Subject, _).
+
+subject_code(Subject, Code) :-
+    teacher_subject(_, Subject, Code);
+    student_subject(_, Subject, Code).
+
+% Queries
+?- teaches(mr_smith, math).
+?- teaches(ms_jones, physics).
+?- learns(john, math).
+?- learns(emma, literature).
+?- subject_code(physics, Code).
