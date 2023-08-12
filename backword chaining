@@ -1,0 +1,13 @@
+% Rules
+hypothesis(penguin) :- wings_small, can_swim, black_and_white.
+hypothesis(albatross) :- wings_large, can_fly_long_distance, white.
+hypothesis(unknown_bird) :- cannot_determine.
+
+% Backward Chaining
+backward_chaining(Bird) :- hypothesis(Bird), !.
+backward_chaining(Bird) :- write("Cannot determine the bird type."), nl.
+
+% Queries
+?- backward_chaining(penguin).
+?- backward_chaining(albatross).
+?- backward_chaining(unknown_bird).
