@@ -1,0 +1,4 @@
+<p>Check out my <a href="#about">about section</a> for more information.</p>
+...
+<h2 id="about">About Me</h2>
+<p>This is the about section of my blog.</p>
