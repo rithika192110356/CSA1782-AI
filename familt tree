@@ -1,0 +1,37 @@
+% Facts
+male(john).
+male(michael).
+male(james).
+male(alex).
+female(sarah).
+female(emma).
+female(lisa).
+
+% Parent relationships
+parent(john, michael).
+parent(john, james).
+parent(sarah, michael).
+parent(sarah, james).
+parent(michael, alex).
+parent(michael, emma).
+parent(lisa, alex).
+parent(lisa, emma).
+
+% Rules
+father(Father, Child) :-
+    male(Father),
+    parent(Father, Child).
+
+mother(Mother, Child) :-
+    female(Mother),
+    parent(Mother, Child).
+
+grandparent(Grandparent, Grandchild) :-
+    parent(Grandparent, Parent),
+    parent(Parent, Grandchild).
+
+ancestor(Ancestor, Descendant) :-
+    parent(Ancestor, Descendant).
+ancestor(Ancestor, Descendant) :-
+    parent(Ancestor, Intermediate),
+    ancestor(Intermediate, Descendant).
