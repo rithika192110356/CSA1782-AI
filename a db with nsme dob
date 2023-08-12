@@ -1,0 +1,22 @@
+% Facts
+dob(john, date(1990, 5, 15)).
+dob(emma, date(1985, 10, 20)).
+dob(michael, date(1998, 2, 8)).
+dob(sarah, date(2005, 7, 3)).
+dob(david, date(1976, 12, 25)).
+
+% Rules
+current_year(2023).
+
+age(Name, Age) :-
+    dob(Name, DOB),
+    current_year(CurrentYear),
+    DOB = date(Year, Month, Day),
+    Age is CurrentYear - Year - (if(Month < 8, 0; if(Month = 8, Day =< 12, 1))).
+
+% Queries
+?- age(john, AgeJohn).
+?- age(emma, AgeEmma).
+?- age(michael, AgeMichael).
+?- age(sarah, AgeSarah).
+?- age(david, AgeDavid).
