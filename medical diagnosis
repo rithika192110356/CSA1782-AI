@@ -1,0 +1,34 @@
+% Facts representing symptoms and diseases
+symptom(fever).
+symptom(cough).
+symptom(headache).
+symptom(rash).
+symptom(chest_pain).
+symptom(fatigue).
+
+disease(influenza, [fever, cough, headache, fatigue]).
+disease(common_cold, [fever, cough, fatigue]).
+disease(measles, [fever, cough, rash]).
+
+% Rule to diagnose a disease based on symptoms
+diagnose(Disease) :-
+    findall(Symptom, symptom(Symptom), AllSymptoms),
+    gather_symptoms(SelectedSymptoms),
+    disease(Disease, DiseaseSymptoms),
+    subset(DiseaseSymptoms, SelectedSymptoms),
+    write("Diagnosis: "), write(Disease), nl.
+
+% Gather symptoms from user input
+gather_symptoms(Symptoms) :-
+    write("Enter symptoms separated by periods (e.g., fever. cough. headache.): "), nl,
+    read(Symptoms).
+
+% Entry point for diagnosis
+start_diagnosis :-
+    write("Welcome to the Medical Diagnosis System."), nl,
+    write("Please input your symptoms:"), nl,
+    diagnose(Disease),
+    write("Thank you for using the Medical Diagnosis System."), nl.
+
+% Query to start the diagnosis
+?- start_diagnosis.
