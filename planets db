@@ -1,0 +1,30 @@
+% Facts
+planet(mercury, rocky, small).
+planet(venus, rocky, small).
+planet(earth, rocky, medium).
+planet(mars, rocky, small).
+planet(jupiter, gas_giant, large).
+planet(saturn, gas_giant, large).
+planet(uranus, ice_giant, medium).
+planet(neptune, ice_giant, medium).
+
+% Rules
+inner_planet(Planet) :-
+    planet(Planet, rocky, _),
+    Planet \= jupiter,
+    Planet \= saturn,
+    Planet \= uranus,
+    Planet \= neptune.
+
+outer_planet(Planet) :-
+    planet(Planet, gas_giant, _);
+    planet(Planet, ice_giant, _).
+
+large_planet(Planet) :-
+    planet(Planet, _, large).
+
+% Queries
+?- planet(earth, Type, Size).
+?- inner_planet(InnerPlanet).
+?- outer_planet(OuterPlanet).
+?- large_planet(LargePlanet).
