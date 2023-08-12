@@ -1,0 +1,14 @@
+% Facts
+can_fly(sparrow).
+can_fly(swallow).
+can_fly(pigeon).
+
+% Rules
+cannot_fly(penguin).
+cannot_fly(ostrich).
+
+% Queries
+?- can_fly(sparrow).
+?- can_fly(penguin).
+?- cannot_fly(swallow).
+?- cannot_fly(ostrich).
